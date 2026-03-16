@@ -14,7 +14,7 @@ export function Footer() {
               <div className="bg-primary/20 p-1.5 rounded-md text-primary group-hover:bg-primary/30 transition-colors">
                 <Code2 size={20} strokeWidth={2.5} />
               </div>
-              <span className="text-lg font-bold tracking-tight text-white group-hover:text-primary-light transition-colors">
+              <span className="text-lg font-bold tracking-tight text-white group-hover:text-primary transition-colors">
                 DevPortfolio
               </span>
             </Link>
@@ -34,7 +34,7 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <h4 className="text-primary font-mono text-sm font-semibold tracking-wider mb-2">PAGES</h4>
               <Link href="/proyek" className="text-muted hover:text-white transition-colors text-sm">Projects</Link>
-              <Link href="/blog" className="text-muted hover:text-white transition-colors text-sm">Writing</Link>
+              <Link href="/blog" className="text-muted hover:text-white transition-colors text-sm">Artikel</Link>
               <Link href="/kontak" className="text-muted hover:text-white transition-colors text-sm">Contact</Link>
             </div>
           </div>

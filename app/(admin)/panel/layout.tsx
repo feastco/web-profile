@@ -52,6 +52,7 @@ export default function AdminPanelLayout({
   const menuItems = [
     { name: "Dashboard", href: "/panel", icon: <LayoutDashboard size={20} /> },
     { name: "Proyek", href: "/panel/proyek", icon: <FolderKanban size={20} /> },
+    { name: "Artikel", href: "/panel/artikel", icon: <FolderKanban size={20} /> },
     { name: "Pengalaman", href: "/panel/pengalaman", icon: <Briefcase size={20} /> },
     { name: "Pesan Inbox", href: "/panel/pesan", icon: <Mail size={20} /> },
   ];

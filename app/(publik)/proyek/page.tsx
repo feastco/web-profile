@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase/client";
 import { KartuProyek, Proyek } from "@/components/fitur/KartuProyek";
 import { Terminal } from "lucide-react";
 
+export const revalidate = 0; // Disable static caching so data changes reflect immediately
+
 // DUMMY FALLBACK
 const fallbackData: Proyek[] = [
   {

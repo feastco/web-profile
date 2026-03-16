@@ -20,8 +20,7 @@ export default function PesanAdminPage() {
   const [pesanList, setPesanList] = useState<Pesan[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchPesan() {
-    setLoading(true);
+  const fetchPesan = async () => {
     const { data, error } = await supabase
       .from("pesan")
       .select("*")
@@ -36,7 +35,10 @@ export default function PesanAdminPage() {
   }
 
   useEffect(() => {
-    fetchPesan();
+    const init = async () => {
+      await fetchPesan();
+    };
+    init();
   }, []);
 
 //   useEffect(() => {

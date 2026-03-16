@@ -9,7 +9,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Projects", href: "/proyek" },
   { name: "Experience", href: "/tentang" }, // Keeping Experience mapped to /tentang for now
-  { name: "Blog", href: "/blog" },
+  { name: "Artikel", href: "/blog" },
   { name: "Contact", href: "/kontak" },
 ];
 
@@ -23,7 +23,7 @@ export function Navbar() {
           <div className="bg-primary/20 p-1.5 rounded-md text-primary group-hover:bg-primary/30 transition-colors">
             <Code2 size={24} strokeWidth={2.5} />
           </div>
-          <span className="text-xl font-bold tracking-tight text-white group-hover:text-primary-light transition-colors">
+          <span className="text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">
             DevPortfolio
           </span>
         </Link>

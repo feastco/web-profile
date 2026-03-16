@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Mail, Briefcase, FolderKanban } from "lucide-react";
+import { Mail, Briefcase, FolderKanban, Book } from "lucide-react";
 
 export default function DashboardAdmin() {
-  const [stats, setStats] = useState({ proyek: 0, pesan: 0, pengalaman: 0 });
+  const [stats, setStats] = useState({ proyek: 0, pesan: 0, artikel: 0, pengalaman: 0 });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [pesanBaru, setPesanBaru] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,11 +18,13 @@ export default function DashboardAdmin() {
       const [
         { count: proyekCount },
         { count: pesanCount },
+        { count: artikelCount },
         { count: pengalamanCount },
         { data: messages }
       ] = await Promise.all([
         supabase.from('proyek').select('*', { count: 'exact', head: true }),
         supabase.from('pesan').select('*', { count: 'exact', head: true }).eq('status', 'belum_dibaca'),
+        supabase.from('artikel').select('*', { count: 'exact', head: true }),
         supabase.from('pengalaman').select('*', { count: 'exact', head: true }),
         supabase.from('pesan').select('*').order('dibuat_pada', { ascending: false }).limit(5)
       ]);
@@ -30,6 +32,7 @@ export default function DashboardAdmin() {
       setStats({
         proyek: proyekCount || 0,
         pesan: pesanCount || 0,
+        artikel: artikelCount || 0,
         pengalaman: pengalamanCount || 0
       });
 
@@ -69,6 +72,18 @@ export default function DashboardAdmin() {
             </div>
             <div className="p-4 bg-primary/20 text-primary rounded-xl">
               <Briefcase size={32} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:border-white/10">
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted uppercase tracking-wider mb-1">Artikel</p>
+              <h3 className="text-4xl font-bold text-white">{stats.artikel}</h3>
+            </div>
+            <div className="p-4 bg-primary/20 text-primary rounded-xl">
+              <Book size={32} />
             </div>
           </CardContent>
         </Card>

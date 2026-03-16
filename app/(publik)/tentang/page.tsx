@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase/client";
 import { Terminal, Code2 } from "lucide-react";
 
+export const revalidate = 0; // Disable static caching so data changes reflect immediately
+
 interface Pengalaman {
   id: string;
   posisi: string;
@@ -94,7 +96,7 @@ export default async function HalamanTentang() {
                 <div className="flex flex-col flex-1 pt-1.5">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
                     <h3 className="font-bold text-2xl text-white">{item.posisi}</h3>
-                    <span className="text-primary-light font-mono text-sm px-3 py-1 rounded-full bg-primary/10 border border-primary/20 shrink-0 inline-flex w-fit">
+                    <span className="text-primary font-mono text-sm px-3 py-1 rounded-full bg-primary/10 border border-primary/20 shrink-0 inline-flex w-fit">
                       {item.periode}
                     </span>
                   </div>

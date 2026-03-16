@@ -3,6 +3,8 @@ import { KartuProyek, Proyek } from "@/components/fitur/KartuProyek";
 import Link from "next/link";
 import { ArrowRight, Box, Code2, Cloud, Database, LayoutTemplate } from "lucide-react";
 
+export const revalidate = 0; // Disable static caching so data changes reflect immediately
+
 // DUMMY FALLBACK jika ENV belum disetup
 const fallbackData: Proyek[] = [
   {
@@ -139,7 +141,7 @@ export default async function Beranda() {
                   
                   <div className="font-mono text-sm text-center">
                     <p className="text-gray-400 mb-2">npm install @devcore/portfolio</p>
-                    <p className="text-primary-light"> {'>'} Portfolio initialized successfully</p>
+                    <p className="text-primary"> {'>'} Portfolio initialized successfully</p>
                   </div>
                 </div>
               </div>
@@ -156,7 +158,7 @@ export default async function Beranda() {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">Featured Projects</h2>
             <p className="text-muted leading-relaxed">Selection of my most challenging and impactful development work.</p>
           </div>
-          <Link href="/proyek" className="relative z-20 flex items-center text-primary-light hover:text-white font-medium transition-colors">
+          <Link href="/proyek" className="relative z-20 flex items-center text-primary hover:text-white font-medium transition-colors">
             View Archive <ArrowRight size={18} className="ml-2" />
           </Link>
         </div>

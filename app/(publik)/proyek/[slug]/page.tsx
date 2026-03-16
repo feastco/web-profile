@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Github, Terminal, Box } from "lucide-react";
 import Link from "next/link";
 
+export const revalidate = 0; // Disable static caching so data changes reflect immediately
+
 export default async function DetailProyek({
   params,
 }: {
@@ -109,7 +111,7 @@ export default async function DetailProyek({
         </div>
 
         {/* Article Body */}
-        <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-loose prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary-light">
+        <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-loose prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary">
           {proyek.konten ? (
             <div className="whitespace-pre-wrap">{proyek.konten}</div>
           ) : (
