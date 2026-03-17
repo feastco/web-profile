@@ -2,15 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase/client";
 import { Terminal, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-// --- Types (sesuai kolom DB: id, judul, slug, konten, diterbitkan_pada) ---
+// --- Types ---
 type Artikel = {
   id: string;
   judul: string;
   slug: string;
   konten: string | null;
+  gambar_sampul: string | null;
   diterbitkan_pada: string | null;
 };
 
@@ -41,11 +43,22 @@ function getExcerpt(konten: string | null, maxLength = 150): string {
 // --- Components ---
 function FeaturedCard({ artikel }: { artikel: Artikel }) {
   return (
-    <Link href={`/blog/${artikel.slug}`} className="group relative grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden rounded-xl border border-white/5 bg-[#151921] hover:border-primary/40 transition-all duration-500">
+    <Link href={`/blog/${artikel.slug}`} className="group relative grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden rounded-xl border border-white/5 bg-secondary-bg hover:border-primary/40 transition-all duration-500">
       <div className="lg:col-span-7 h-64 lg:h-auto overflow-hidden">
-        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-background flex items-center justify-center min-h-[16rem]">
-          <Terminal size={48} className="text-primary/30" />
-        </div>
+        {artikel.gambar_sampul ? (
+          <Image
+            src={artikel.gambar_sampul}
+            alt={artikel.judul}
+            width={800}
+            height={450}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            unoptimized
+          />
+        ) : (
+          <div className="w-full h-full bg-linear-to-br from-primary/20 to-background flex items-center justify-center min-h-64">
+            <Terminal size={48} className="text-primary/30" />
+          </div>
+        )}
       </div>
       <div className="lg:col-span-5 p-8 lg:p-12 flex flex-col justify-center">
         <div className="flex items-center gap-3 mb-6">
@@ -70,11 +83,22 @@ function FeaturedCard({ artikel }: { artikel: Artikel }) {
 
 function ArticleCard({ artikel }: { artikel: Artikel }) {
   return (
-    <Link href={`/blog/${artikel.slug}`} className="group flex flex-col bg-[#151921] rounded-xl border border-white/5 overflow-hidden hover:border-primary/40 transition-all duration-300">
-      <div className="aspect-video w-full overflow-hidden flex-shrink-0">
-        <div className="w-full h-full bg-gradient-to-br from-primary/10 to-background flex items-center justify-center">
-          <Terminal size={32} className="text-primary/30" />
-        </div>
+    <Link href={`/blog/${artikel.slug}`} className="group flex flex-col bg-secondary-bg rounded-xl border border-white/5 overflow-hidden hover:border-primary/40 transition-all duration-300">
+      <div className="aspect-video w-full overflow-hidden shrink-0">
+        {artikel.gambar_sampul ? (
+          <Image
+            src={artikel.gambar_sampul}
+            alt={artikel.judul}
+            width={600}
+            height={340}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            unoptimized
+          />
+        ) : (
+          <div className="w-full h-full bg-linear-to-br from-primary/10 to-background flex items-center justify-center">
+            <Terminal size={32} className="text-primary/30" />
+          </div>
+        )}
       </div>
       <div className="p-6 flex flex-col flex-1">
         <div className="flex justify-between items-center mb-4">
@@ -143,7 +167,7 @@ export default function ArtikelPage() {
     <div className="py-12">
       {/* Header */}
       <div className="flex flex-col gap-2 mb-14">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-primary mb-4 font-mono w-fit">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/2 text-sm font-medium text-primary mb-4 font-mono w-fit">
           <Terminal size={16} />
           <span>~/artikel/archive</span>
         </div>
@@ -160,7 +184,7 @@ export default function ArtikelPage() {
 
       {/* Article Grid */}
       {artikelList.length === 0 ? (
-        <div className="py-20 text-center border border-white/5 rounded-2xl bg-[#151921]">
+        <div className="py-20 text-center border border-white/5 rounded-2xl bg-secondary-bg">
           <p className="font-mono text-muted">Belum ada artikel yang dipublish.</p>
         </div>
       ) : paginated.length > 0 ? (

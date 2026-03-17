@@ -2,17 +2,21 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { use } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { ArrowLeft, Clock, Calendar, ChevronRight } from "lucide-react";
+import PdfViewer from "@/components/fitur/PdfViewer";
 
-// --- Types (sesuai kolom DB: id, judul, slug, konten, diterbitkan_pada) ---
+// --- Types ---
 type Artikel = {
   id: string;
   judul: string;
   slug: string;
   konten: string | null;
+  gambar_sampul: string | null;
+  file_pdf: string | null;
   diterbitkan_pada: string | null;
 };
 
@@ -120,7 +124,7 @@ function renderContent(konten: string) {
 export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const [artikel, setArtikel] = useState<Artikel | null>(null);
-  const [related, setRelated] = useState<{ slug: string; judul: string; diterbitkan_pada: string | null }[]>([]);
+  const [related, setRelated] = useState<{ slug: string; judul: string; diterbitkan_pada: string | null; gambar_sampul: string | null }[]>([]);
   const [readProgress, setReadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [notFoundState, setNotFoundState] = useState(false);
@@ -158,7 +162,7 @@ export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: 
         // fetch related
         const { data: rel } = await supabase
           .from("artikel")
-          .select("slug, judul, diterbitkan_pada")
+          .select("slug, judul, diterbitkan_pada, gambar_sampul")
           .neq("slug", slug)
           .order("diterbitkan_pada", { ascending: false })
           .limit(3);
@@ -203,6 +207,21 @@ export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: 
         Kembali ke Artikel
       </Link>
 
+      {/* Hero Image */}
+      {artikel.gambar_sampul && (
+        <div className="mb-10 max-w-5xl mx-auto rounded-2xl overflow-hidden border border-white/5">
+          <Image
+            src={artikel.gambar_sampul}
+            alt={artikel.judul}
+            width={1200}
+            height={600}
+            className="w-full h-auto max-h-112 object-cover"
+            unoptimized
+            priority
+          />
+        </div>
+      )}
+
       {/* Hero */}
       <div className="mb-10 max-w-5xl mx-auto">
         <div className="flex flex-col gap-4 mb-8">
@@ -243,6 +262,11 @@ export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: 
               <p className="text-slate-400">No content available for this article yet.</p>
             )}
           </div>
+
+          {/* PDF Viewer */}
+          {artikel.file_pdf && (
+            <PdfViewer url={artikel.file_pdf} title={`${artikel.judul} — PDF`} />
+          )}
         </article>
 
         {/* Sidebar */}
@@ -253,11 +277,25 @@ export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: 
               <h3 className="text-white font-bold mb-6">Artikel Terkait</h3>
               <div className="flex flex-col gap-5">
                 {related.map((r) => (
-                  <Link key={r.slug} href={`/blog/${r.slug}`} className="group flex flex-col gap-1.5">
-                    <p className="text-xs font-mono text-primary">{formatDateShort(r.diterbitkan_pada)}</p>
-                    <h4 className="text-slate-300 group-hover:text-primary transition-colors font-medium text-sm leading-snug">
-                      {r.judul}
-                    </h4>
+                  <Link key={r.slug} href={`/blog/${r.slug}`} className="group flex items-start gap-3">
+                    {r.gambar_sampul ? (
+                      <Image
+                        src={r.gambar_sampul}
+                        alt={r.judul}
+                        width={64}
+                        height={40}
+                        className="w-16 h-10 rounded-md object-cover border border-white/10 shrink-0 mt-0.5"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-16 h-10 rounded-md bg-white/5 border border-white/10 shrink-0 mt-0.5" />
+                    )}
+                    <div>
+                      <p className="text-xs font-mono text-primary">{formatDateShort(r.diterbitkan_pada)}</p>
+                      <h4 className="text-slate-300 group-hover:text-primary transition-colors font-medium text-sm leading-snug">
+                        {r.judul}
+                      </h4>
+                    </div>
                   </Link>
                 ))}
               </div>

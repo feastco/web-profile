@@ -1,63 +1,93 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { use } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Github, Terminal, Box } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import GaleriProyek from "@/components/fitur/GaleriProyek";
 
-export const revalidate = 0; // Disable static caching so data changes reflect immediately
+interface Proyek {
+  judul: string;
+  slug: string;
+  kutipan: string | null;
+  kategori: string | null;
+  konten: string | null;
+  teknologi: string[] | null;
+  gambar_andalan: string | null;
+  galeri_gambar: string[] | null;
+  url_live: string | null;
+  url_github: string | null;
+}
 
-export default async function DetailProyek({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+export default function DetailProyek({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const [proyek, setProyek] = useState<Proyek | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFoundState, setNotFoundState] = useState(false);
 
-  let proyek = null;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data, error } = await supabase
+          .from('proyek')
+          .select('*')
+          .eq('slug', slug)
+          .single();
 
-  try {
-    const { data, error } = await supabase
-      .from('proyek')
-      .select('*')
-      .eq('slug', slug)
-      .single();
-      
-    if (error) throw error;
-    proyek = data;
-  } catch {
-    // Sebagai fallback development tanpa db, kita sediakan mock statis
-    if (slug === 'omni-dashboard') {
-      proyek = {
-        judul: "Omni Dashboard",
-        kutipan: "A real-time analytics platform monitoring microservices health across global regions.",
-        konten: "## Platform Architecture\n\nThis project was built to solve the massive data ingestion problems of our legacy microservices architecture. By implementing an event-driven system with Kafka and real-time WebSockets via Supabase, we managed to reduce dashboard latency from 45 seconds to just under 200ms.\n\n### Key Highlights\n- **Real-time Metrics:** Streaming over 10M events per hour directly to the frontend clients.\n- **Custom UI Kit:** Developed a headless UI library tailored for heavy data grids.\n- **Zero Downtime:** Automated CI/CD pipelines deploying multiple updates daily.\n\nThe resulting product successfully monitored uptime across 15 geographical regions.",
-        kategori: "FinTech",
-        teknologi: ["React", "Express", "Supabase", "Kafka"],
-        url_live: "https://example.com",
-        url_github: null,
-        dibuat_pada: "2023-11-12T00:00:00"
-      };
-    } else {
-      notFound();
+        if (error) throw error;
+        setProyek(data as Proyek);
+      } catch {
+        setNotFoundState(true);
+      } finally {
+        setLoading(false);
+      }
     }
+    fetchData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-40">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
 
-  if (!proyek) {
+  if (notFoundState || !proyek) {
     notFound();
   }
 
   return (
-    <article className="pt-32 pb-20 min-h-screen">
+    <article className="py-12 min-h-screen">
       <div className="max-w-4xl mx-auto w-full">
         {/* Back Link */}
         <Link href="/proyek" className="inline-flex items-center text-muted hover:text-white transition-colors mb-10 group">
-          <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Archive
+          <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" /> Kembali ke Proyek
         </Link>
+
+        {/* Hero Image */}
+        {proyek.gambar_andalan && (
+          <div className="mb-10 rounded-2xl overflow-hidden border border-white/5">
+            <Image
+              src={proyek.gambar_andalan}
+              alt={proyek.judul}
+              width={1200}
+              height={600}
+              className="w-full h-auto max-h-112 object-cover"
+              unoptimized
+              priority
+            />
+          </div>
+        )}
 
         {/* Header Unit */}
         <div className="mb-14 relative">
           <div className="absolute top-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
           
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-primary mb-6 font-mono relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/2 text-sm font-medium text-primary mb-6 font-mono relative z-10">
             <Terminal size={16} />
             <span>~/projects/{slug}</span>
           </div>
@@ -73,7 +103,7 @@ export default async function DetailProyek({
 
         {/* Meta Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 relative z-10">
-          <div className="bg-[#151921] border border-white/5 p-6 rounded-2xl flex flex-col justify-between">
+          <div className="bg-secondary-bg border border-white/5 p-6 rounded-2xl flex flex-col justify-between">
             <div className="flex items-center gap-2 text-muted mb-4">
               <Box size={18} />
               <span className="text-sm font-semibold uppercase tracking-wider">Category</span>
@@ -81,7 +111,7 @@ export default async function DetailProyek({
             <span className="text-lg font-medium text-white">{proyek.kategori || "Uncategorized"}</span>
           </div>
 
-          <div className="bg-[#151921] border border-white/5 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
+          <div className="bg-secondary-bg border border-white/5 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
             <div className="flex items-center gap-2 text-muted mb-4">
               <CodeIcon size={18} />
               <span className="text-sm font-semibold uppercase tracking-wider">Tech Stack</span>
@@ -104,21 +134,43 @@ export default async function DetailProyek({
             </a>
           )}
           {proyek.url_github && (
-            <a href={proyek.url_github} target="_blank" rel="noreferrer" className="bg-[#151921] border border-white/10 hover:border-white/20 text-white flex items-center px-6 py-3.5 rounded-xl font-medium transition-all group">
+            <a href={proyek.url_github} target="_blank" rel="noreferrer" className="bg-secondary-bg border border-white/10 hover:border-white/20 text-white flex items-center px-6 py-3.5 rounded-xl font-medium transition-all group">
               <Github size={18} className="mr-2 group-hover:-translate-y-0.5 transition-transform"/> Source Code
             </a>
           )}
         </div>
+
+        {/* Screenshot Gallery */}
+        {proyek.galeri_gambar && proyek.galeri_gambar.length > 0 && (
+          <div className="mb-16">
+            <GaleriProyek gambar={proyek.galeri_gambar} judulProyek={proyek.judul} />
+          </div>
+        )}
 
         {/* Article Body */}
         <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-loose prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary">
           {proyek.konten ? (
             <div className="whitespace-pre-wrap">{proyek.konten}</div>
           ) : (
-            <div className="py-20 text-center border border-white/5 rounded-2xl bg-[#151921]">
+            <div className="py-20 text-center border border-white/5 rounded-2xl bg-secondary-bg">
               <p className="font-mono text-muted mb-0">No detailed case study provided.</p>
             </div>
           )}
+        </div>
+
+        {/* Footer CTA */}
+        <div className="border-t border-white/5 pt-12 mt-20 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h3 className="text-2xl font-bold text-white">Lihat proyek lainnya</h3>
+            <p className="text-slate-400 mt-1">Jelajahi studi kasus dan proyek yang pernah dibuat.</p>
+          </div>
+          <Link
+            href="/proyek"
+            className="flex items-center gap-2 bg-white/5 border border-white/10 hover:bg-primary hover:border-primary text-white px-8 py-3 rounded-xl font-bold transition-all group"
+          >
+            <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
+            Kembali ke Proyek
+          </Link>
         </div>
       </div>
     </article>
@@ -144,6 +196,5 @@ function CodeIcon({ size = 24, className, ...props }: React.ComponentProps<"svg"
       <polyline points="16 18 22 12 16 6" />
       <polyline points="8 6 2 12 8 18" />
     </svg>
-  )
+  );
 }
-

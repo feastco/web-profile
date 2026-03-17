@@ -3,12 +3,17 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Plus, Trash2, Edit, X, Save } from "lucide-react";
+import UploadGambar from "@/components/fitur/UploadGambar";
+import UploadPdf from "@/components/fitur/UploadPdf";
+import Image from "next/image";
 
 interface Artikel {
   id: string;
   judul: string;
   slug: string;
   konten: string | null;
+  gambar_sampul: string | null;
+  file_pdf: string | null;
   diterbitkan_pada: string | null;
 }
 
@@ -23,7 +28,9 @@ export default function ManajemenArtikel() {
   const [formData, setFormData] = useState({
     judul: "",
     slug: "",
-    konten: ""
+    konten: "",
+    gambar_sampul: "",
+    file_pdf: "",
   });
 
   const fetchArtikel = async () => {
@@ -47,7 +54,7 @@ export default function ManajemenArtikel() {
   const handleOpenAdd = () => {
     setEditingId(null);
     setFormData({
-      judul: "", slug: "", konten: ""
+      judul: "", slug: "", konten: "", gambar_sampul: "", file_pdf: ""
     });
     setIsFormOpen(true);
   };
@@ -57,7 +64,9 @@ export default function ManajemenArtikel() {
     setFormData({
       judul: item.judul || "",
       slug: item.slug || "",
-      konten: item.konten || ""
+      konten: item.konten || "",
+      gambar_sampul: item.gambar_sampul || "",
+      file_pdf: item.file_pdf || "",
     });
     setIsFormOpen(true);
   };
@@ -74,7 +83,9 @@ export default function ManajemenArtikel() {
     const payload = {
       judul: formData.judul,
       slug: formData.slug || formData.judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-      konten: formData.konten
+      konten: formData.konten,
+      gambar_sampul: formData.gambar_sampul || null,
+      file_pdf: formData.file_pdf || null,
     };
     
     try {
@@ -118,6 +129,14 @@ export default function ManajemenArtikel() {
         </div>
 
         <form onSubmit={handleSubmit} className="glass-panel p-6 md:p-8 rounded-2xl border border-white/5 space-y-6">
+          {/* Gambar Sampul */}
+          <UploadGambar
+            value={formData.gambar_sampul}
+            onChange={(url) => setFormData({ ...formData, gambar_sampul: url })}
+            folder="artikel-sampul"
+            label="Gambar Sampul Artikel"
+          />
+
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-muted mb-1.5">Judul Artikel *</label>
@@ -152,6 +171,14 @@ export default function ManajemenArtikel() {
                 placeholder="Tulis artikel dengan format Markdown..."
               />
             </div>
+
+            {/* Upload PDF */}
+            <UploadPdf
+              value={formData.file_pdf}
+              onChange={(url) => setFormData({ ...formData, file_pdf: url })}
+              folder="artikel-pdf"
+              label="Lampiran PDF (opsional, pengunjung bisa baca)"
+            />
           </div>
 
           <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/5">
@@ -217,8 +244,31 @@ export default function ManajemenArtikel() {
                 artikel.map((item) => (
                   <tr key={item.id} className="hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4 border-l-2 border-transparent group-hover:border-primary">
-                      <div className="font-semibold text-white text-base mb-1">{item.judul}</div>
-                      <div className="text-xs text-muted font-mono">{item.slug}</div>
+                      <div className="flex items-center gap-4">
+                        {item.gambar_sampul ? (
+                          <Image
+                            src={item.gambar_sampul}
+                            alt={item.judul}
+                            width={80}
+                            height={48}
+                            className="w-20 h-12 rounded-lg object-cover border border-white/10 shrink-0"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-20 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                            <span className="text-muted text-[10px] font-mono">IMG</span>
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-semibold text-white text-base mb-1">{item.judul}</div>
+                          <div className="text-xs text-muted font-mono flex items-center gap-2">
+                            <span>{item.slug}</span>
+                            {item.file_pdf && (
+                              <span className="px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded text-[10px] font-bold">PDF</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-muted">

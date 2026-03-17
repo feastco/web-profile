@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Badge } from "@/components/ui/Badge";
 import { Plus, Trash2, Edit, X, Save } from "lucide-react";
+import UploadGambar from "@/components/fitur/UploadGambar";
+import UploadGaleri from "@/components/fitur/UploadGaleri";
+import Image from "next/image";
 
 interface Proyek {
   id: string;
@@ -13,6 +16,7 @@ interface Proyek {
   kutipan: string | null;
   teknologi: string[] | null;
   gambar_andalan: string | null;
+  galeri_gambar: string[] | null;
   url_live: string | null;
   url_github: string | null;
   unggulan: boolean;
@@ -34,6 +38,7 @@ export default function ManajemenProyek() {
     kutipan: "",
     teknologi: "",
     gambar_andalan: "",
+    galeri_gambar: [] as string[],
     url_live: "",
     url_github: "",
     unggulan: false,
@@ -62,7 +67,7 @@ export default function ManajemenProyek() {
     setEditingId(null);
     setFormData({
       judul: "", slug: "", kategori: "", kutipan: "", teknologi: "",
-      gambar_andalan: "", url_live: "", url_github: "", unggulan: false, konten: ""
+      gambar_andalan: "", galeri_gambar: [], url_live: "", url_github: "", unggulan: false, konten: ""
     });
     setIsFormOpen(true);
   };
@@ -76,6 +81,7 @@ export default function ManajemenProyek() {
       kutipan: item.kutipan || "",
       teknologi: Array.isArray(item.teknologi) ? item.teknologi.join(", ") : "",
       gambar_andalan: item.gambar_andalan || "",
+      galeri_gambar: Array.isArray(item.galeri_gambar) ? item.galeri_gambar : [],
       url_live: item.url_live || "",
       url_github: item.url_github || "",
       unggulan: item.unggulan || false,
@@ -106,6 +112,7 @@ export default function ManajemenProyek() {
       kutipan: formData.kutipan,
       teknologi: techArray,
       gambar_andalan: formData.gambar_andalan || null,
+      galeri_gambar: formData.galeri_gambar.length > 0 ? formData.galeri_gambar : null,
       url_live: formData.url_live || null,
       url_github: formData.url_github || null,
       unggulan: formData.unggulan,
@@ -148,6 +155,14 @@ export default function ManajemenProyek() {
         </div>
 
         <form onSubmit={handleSubmit} className="glass-panel p-6 md:p-8 rounded-2xl border border-white/5 space-y-6">
+          {/* Gambar Utama */}
+          <UploadGambar
+            value={formData.gambar_andalan}
+            onChange={(url) => setFormData({ ...formData, gambar_andalan: url })}
+            folder="proyek-sampul"
+            label="Gambar Utama Proyek"
+          />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
@@ -213,17 +228,6 @@ export default function ManajemenProyek() {
             </div>
 
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-muted mb-1.5">Gambar URL</label>
-                <input 
-                  type="url" 
-                  value={formData.gambar_andalan}
-                  onChange={(e) => setFormData({...formData, gambar_andalan: e.target.value})}
-                  className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-hidden focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all text-sm"
-                  placeholder="https://..."
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-muted mb-1.5">URL Live</label>
@@ -269,6 +273,17 @@ export default function ManajemenProyek() {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Galeri Screenshot */}
+          <div className="pt-4 border-t border-white/5">
+            <UploadGaleri
+              value={formData.galeri_gambar}
+              onChange={(urls) => setFormData({ ...formData, galeri_gambar: urls })}
+              folder="proyek-galeri"
+              label="Galeri Screenshot Proyek"
+              maxFiles={10}
+            />
           </div>
 
           <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/5">
@@ -335,8 +350,33 @@ export default function ManajemenProyek() {
                 proyek.map((item) => (
                   <tr key={item.id} className="hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4 border-l-2 border-transparent group-hover:border-primary">
-                      <div className="font-semibold text-white text-base mb-1">{item.judul}</div>
-                      <div className="text-xs text-muted font-mono">{item.slug}</div>
+                      <div className="flex items-center gap-4">
+                        {item.gambar_andalan ? (
+                          <Image
+                            src={item.gambar_andalan}
+                            alt={item.judul}
+                            width={80}
+                            height={48}
+                            className="w-20 h-12 rounded-lg object-cover border border-white/10 shrink-0"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-20 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                            <span className="text-muted text-[10px] font-mono">IMG</span>
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-semibold text-white text-base mb-1">{item.judul}</div>
+                          <div className="text-xs text-muted font-mono flex items-center gap-2">
+                            <span>{item.slug}</span>
+                            {item.galeri_gambar && item.galeri_gambar.length > 0 && (
+                              <span className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-bold">
+                                {item.galeri_gambar.length} foto
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="mb-2">
