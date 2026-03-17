@@ -9,10 +9,22 @@ interface GaleriProyekProps {
   judulProyek?: string;
 }
 
-export default function GaleriProyek({ gambar, judulProyek = "Proyek" }: GaleriProyekProps) {
+export default function GaleriProyek({ gambar: gambarRaw, judulProyek = "Proyek" }: GaleriProyekProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  if (!gambar || gambar.length === 0) return null;
+  // Safety: parse gambar dari berbagai format (string, JSON string, array)
+  const gambar: string[] = (() => {
+    if (Array.isArray(gambarRaw)) return gambarRaw.filter(Boolean);
+    if (typeof gambarRaw === "string") {
+      try { 
+        const parsed = JSON.parse(gambarRaw);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch { return []; }
+    }
+    return [];
+  })();
+
+  if (gambar.length === 0) return null;
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
