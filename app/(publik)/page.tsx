@@ -173,7 +173,7 @@ export default async function Beranda() {
             {/* UBAH UKURAN & POSISI DI SINI:
                 - "w-[260px]" adalah ukuran lebar & tinggi foto saat di HP (Mobile).
                 - "-translate-y-4 lg:-translate-y-12" mengatur letak naik turun (berbeda untuk HP & Desktop). */}
-            <div className="relative w-[260px] sm:w-[320px] lg:w-full max-w-sm xl:max-w-md aspect-square group -translate-y-4 lg:-translate-y-12 duration-300">
+            <div className="relative w-[260px] sm:w-[320px] lg:w-full max-w-sm xl:max-w-md aspect-square group -translate-y-4 lg:-translate-y-50 duration-300">
               {/* Efek Glow di belakang */}
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-all duration-700"></div>
               
