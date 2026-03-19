@@ -170,7 +170,11 @@ export default async function Beranda() {
 
           {/* Kolom Kanan: Foto Profil / Visual */}
           <div className="hidden lg:flex justify-end pr-4 w-full">
-            <div className="relative w-full max-w-sm xl:max-w-md aspect-square group">
+            {/* UBAH POSISI LINGKARAN (NAIK/TURUN) DI SINI:
+                Ubah nilai "-translate-y-4" di bawah ini.
+                - Jika ingin LEBIH NAIK, perbesar angkanya (misal: -translate-y-10 atau -translate-y-[50px])
+                - Jika ingin TURUN, hilangkan tanda minus (misal: translate-y-10 atau translate-y-[50px]) */}
+            <div className="relative w-full max-w-sm xl:max-w-md aspect-square group -translate-y-50 duration-300">
               {/* Efek Glow di belakang */}
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-all duration-700"></div>
               
