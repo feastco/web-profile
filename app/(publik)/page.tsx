@@ -169,12 +169,11 @@ export default async function Beranda() {
           </div>
 
           {/* Kolom Kanan: Foto Profil / Visual */}
-          <div className="hidden lg:flex justify-end pr-4 w-full">
-            {/* UBAH POSISI LINGKARAN (NAIK/TURUN) DI SINI:
-                Ubah nilai "-translate-y-4" di bawah ini.
-                - Jika ingin LEBIH NAIK, perbesar angkanya (misal: -translate-y-10 atau -translate-y-[50px])
-                - Jika ingin TURUN, hilangkan tanda minus (misal: translate-y-10 atau translate-y-[50px]) */}
-            <div className="relative w-full max-w-sm xl:max-w-md aspect-square group -translate-y-50 duration-300">
+          <div className="flex justify-center lg:justify-end pr-0 lg:pr-4 w-full order-first lg:order-last mb-8 lg:mb-0 mt-8 lg:mt-0">
+            {/* UBAH UKURAN & POSISI DI SINI:
+                - "w-[260px]" adalah ukuran lebar & tinggi foto saat di HP (Mobile).
+                - "-translate-y-4 lg:-translate-y-12" mengatur letak naik turun (berbeda untuk HP & Desktop). */}
+            <div className="relative w-[260px] sm:w-[320px] lg:w-full max-w-sm xl:max-w-md aspect-square group -translate-y-4 lg:-translate-y-12 duration-300">
               {/* Efek Glow di belakang */}
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-all duration-700"></div>
               
