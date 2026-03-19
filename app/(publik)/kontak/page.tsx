@@ -36,7 +36,7 @@ export default function KontakPage() {
   };
 
   return (
-    <div className="pt-32 pb-20 min-h-screen">
+    <div className="pt-8 pb-20 min-h-screen">
       <div className="max-w-xl mx-auto w-full">
         
         <div className="text-center mb-16">

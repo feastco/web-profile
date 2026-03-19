@@ -104,7 +104,7 @@ export default async function Beranda() {
 
   return (
     <>
-      <section className="relative z-10 pt-32 lg:pt-40 pb-20 min-h-[85vh] flex items-center">
+      <section className="relative z-10 pt-8 lg:pt-12 pb-20 min-h-[85vh] flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center w-full">
           
           {/* Kolom Kiri: Hero Teks */}

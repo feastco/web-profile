@@ -46,7 +46,7 @@ export default async function HalamanProyek() {
   }
 
   return (
-    <div className="pt-32 pb-20 min-h-screen">
+    <div className="pt-8 pb-20 min-h-screen">
       <div className="max-w-3xl mb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-primary mb-6 font-mono">
           <Terminal size={16} />
