@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/client";
-import { Terminal, Send } from "lucide-react";
+import { Terminal, Send, Github, Instagram, Linkedin, MessageCircle } from "lucide-react";
 
 export default function KontakPage() {
   const [formData, setFormData] = useState({ nama: "", email: "", pesan: "" });
@@ -45,9 +45,24 @@ export default function KontakPage() {
             <span>~/contact/init</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight mb-4 text-white">Let&apos;s Connect</h1>
-          <p className="text-lg text-muted">
+          <p className="text-lg text-muted mb-8">
             Interested in collaboration or have a question? Fill out the form below and I&apos;ll get back to you shortly.
           </p>
+
+          <div className="flex items-center justify-center gap-4">
+            <a href="https://github.com/vascodxg" target="_blank" rel="noopener noreferrer" className="p-3 bg-[#151921] border border-white/10 rounded-full text-gray-400 hover:text-white hover:border-white/30 transition-all hover:scale-110 shadow-lg" aria-label="GitHub">
+              <Github size={20} />
+            </a>
+            <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" className="p-3 bg-[#151921] border border-white/10 rounded-full text-gray-400 hover:text-[#0A66C2] hover:border-[#0A66C2]/50 transition-all hover:scale-110 shadow-lg" aria-label="LinkedIn">
+              <Linkedin size={20} />
+            </a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="p-3 bg-[#151921] border border-white/10 rounded-full text-gray-400 hover:text-[#E1306C] hover:border-[#E1306C]/50 transition-all hover:scale-110 shadow-lg" aria-label="Instagram">
+              <Instagram size={20} />
+            </a>
+            <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="p-3 bg-[#151921] border border-white/10 rounded-full text-gray-400 hover:text-[#25D366] hover:border-[#25D366]/50 transition-all hover:scale-110 shadow-lg" aria-label="WhatsApp">
+              <MessageCircle size={20} />
+            </a>
+          </div>
         </div>
 
         <div className="bg-[#151921] p-8 md:p-10 rounded-2xl border border-white/5 shadow-2xl relative overflow-hidden">

@@ -1,9 +1,46 @@
 import { supabase } from "@/lib/supabase/client";
 import { KartuProyek, Proyek } from "@/components/fitur/KartuProyek";
 import Link from "next/link";
-import { ArrowRight, Box, Code2, Cloud, Database, LayoutTemplate } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Code, Palette, FileJson, Server, Coffee, Hexagon, Box, Layers, Flame, Wind, LayoutTemplate, Database, Globe, Monitor, Smartphone, Code2, GitBranch, Github, Package, Send, Triangle, LayoutGrid, HardDrive, Terminal, Braces, FileCode } from "lucide-react";
 
 export const revalidate = 0; // Disable static caching so data changes reflect immediately
+
+const techStackItems = [
+  { name: "PHP", icon: Server, color: "text-indigo-400" },
+  { name: "HTML5", icon: Code, color: "text-orange-500" },
+  { name: "CSS", icon: Palette, color: "text-blue-500" },
+  { name: "Java", icon: Coffee, color: "text-red-500" },
+  { name: "JavaScript", icon: FileJson, color: "text-yellow-400" },
+  { name: "C++", icon: Braces, color: "text-blue-600" },
+  { name: "CodeIgniter", icon: Flame, color: "text-orange-600" },
+  { name: "Laravel", icon: Layers, color: "text-red-500" },
+  { name: "React", icon: Hexagon, color: "text-cyan-400" },
+  { name: "Node.js", icon: Box, color: "text-green-500" },
+  { name: "Tailwind CSS", icon: Wind, color: "text-sky-400" },
+  { name: "Bootstrap", icon: LayoutTemplate, color: "text-purple-500" },
+  { name: "MySQL", icon: Database, color: "text-blue-400" },
+  { name: "PostgreSQL", icon: Database, color: "text-blue-500" },
+  { name: "XML", icon: FileCode, color: "text-orange-400" },
+  { name: "JSON", icon: Braces, color: "text-gray-300" },
+  { name: "NGINX", icon: Globe, color: "text-green-600" },
+  { name: "Apache HTTP Server", icon: Globe, color: "text-red-400" }
+];
+
+const devToolsItems = [
+  { name: "Visual Studio", icon: Monitor, color: "text-purple-500" },
+  { name: "Android Studio", icon: Smartphone, color: "text-green-500" },
+  { name: "NetBeans IDE", icon: Code2, color: "text-blue-300" },
+  { name: "IntelliJ IDEA", icon: Code2, color: "text-pink-500" },
+  { name: "Git", icon: GitBranch, color: "text-orange-500" },
+  { name: "GitHub", icon: Github, color: "text-white" },
+  { name: "Composer", icon: Package, color: "text-yellow-600" },
+  { name: "Postman", icon: Send, color: "text-orange-400" },
+  { name: "Vercel", icon: Triangle, color: "text-white" },
+  { name: "Windows", icon: LayoutGrid, color: "text-blue-400" },
+  { name: "Debian", icon: HardDrive, color: "text-red-500" },
+  { name: "Ubuntu", icon: Terminal, color: "text-orange-500" }
+];
 
 // DUMMY FALLBACK jika ENV belum disetup
 const fallbackData: Proyek[] = [
@@ -101,49 +138,67 @@ export default async function Beranda() {
               </Link>
             </div>
 
-            {/* Tech Stack */}
-            <div>
-              <h3 className="font-mono text-xs font-semibold text-muted tracking-widest uppercase mb-4">Tech Stack</h3>
-              <div className="flex flex-wrap gap-3">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300">
-                  <Box size={16} className="text-cyan-400" /> React
+            {/* Tech Stack & Tools */}
+            <div className="space-y-6">
+              {/* Grup Tech Stack */}
+              <div>
+                <h3 className="font-mono text-xs font-semibold text-muted tracking-widest uppercase mb-3">Tech Stack & Languages</h3>
+                <div className="flex flex-wrap gap-2">
+                  {techStackItems.map(tech => (
+                    <span key={tech.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
+                      <tech.icon size={14} className={tech.color} />
+                      {tech.name}
+                    </span>
+                  ))}
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300">
-                  <Code2 size={16} className="text-green-500" /> Node.js
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300">
-                  <LayoutTemplate size={16} className="text-sky-400" /> Tailwind
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300">
-                  <Database size={16} className="text-blue-400" /> PostgreSQL
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300">
-                  <Cloud size={16} className="text-orange-400" /> AWS
+              </div>
+
+              {/* Grup Tools */}
+              <div>
+                <h3 className="font-mono text-xs font-semibold text-muted tracking-widest uppercase mb-3">Tools & Environment</h3>
+                <div className="flex flex-wrap gap-2">
+                  {devToolsItems.map(tool => (
+                    <span key={tool.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
+                      <tool.icon size={14} className={tool.color} />
+                      {tool.name}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Kolom Kanan: Ilustrasi Visual / Mock Terminal */}
-          <div className="hidden lg:flex justify-end pr-4">
-            <div className="w-full max-w-lg aspect-square relative glass-panel rounded-2xl border border-white/10 bg-linear-to-b from-transparent to-[#151921]/50 p-2 shadow-2xl">
-              <div className="absolute -top-3 left-4 bg-[#0B0E14] px-2 text-white/20">
-                <div className="w-8 h-2 rounded-full bg-white/10"></div>
-              </div>
-              <div className="w-full h-full rounded-xl border border-white/5 bg-[#0B0E14]/60 flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-xs">
-                {/* Aksen Glowing */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[80px]"></div>
-                
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-20 h-20 bg-primary/20 rounded-xl flex items-center justify-center mb-8 border border-primary/30">
-                    <Code2 size={40} className="text-primary" strokeWidth={2} />
-                  </div>
-                  
-                  <div className="font-mono text-sm text-center">
-                    <p className="text-gray-400 mb-2">npm install @devcore/portfolio</p>
-                    <p className="text-primary"> {'>'} Portfolio initialized successfully</p>
-                  </div>
+          {/* Kolom Kanan: Foto Profil / Visual */}
+          <div className="hidden lg:flex justify-end pr-4 w-full">
+            <div className="relative w-full max-w-sm xl:max-w-md aspect-square group">
+              {/* Efek Glow di belakang */}
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-all duration-700"></div>
+              
+              {/* Frame Kaca (Glassmorphism) */}
+              <div className="relative w-full h-full rounded-full border border-white/10 bg-linear-to-b from-white/5 to-transparent p-3 shadow-2xl backdrop-blur-md">
+                <div className="w-full h-full rounded-full overflow-hidden border border-white/5 bg-[#0B0E14] relative flex items-center justify-center">
+                  {/* Foto Profil */}
+                  <Image 
+                    src="/images/profile.jpg"
+                    alt="Foto Profil"
+                    fill
+                    // Anda bisa mengubah object-center menjadi object-top, object-bottom, atau object-[center_30%] untuk menggeser fokus foto
+                    className="object-cover object-[center_5%] transition-transform duration-700 group-hover:scale-105"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 500px"
+                  />
+                  {/* Overlay gradien tipis agar menyatu dengan background */}
+                  <div className="absolute inset-0 bg-linear-to-tr from-[#0B0E14]/40 via-transparent to-transparent pointer-events-none"></div>
                 </div>
+              </div>
+              
+              {/* Floating Badge (Aksen tambahan) */}
+              <div className="absolute bottom-6 right-0 lg:-right-6 glass-panel px-5 py-3 rounded-full border border-white/10 shadow-xl flex items-center gap-3 bg-white/5 backdrop-blur-xl z-20">
+                <div className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
+                </div>
+                <span className="text-xs font-semibold tracking-wide text-white">Open to Work</span>
               </div>
             </div>
           </div>
