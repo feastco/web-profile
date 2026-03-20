@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase/client";
 import { KartuProyek, Proyek } from "@/components/fitur/KartuProyek";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Code, Palette, FileJson, Server, Coffee, Hexagon, Box, Layers, Flame, Wind, LayoutTemplate, Database, Globe, Monitor, Smartphone, Code2, GitBranch, Github, Package, Send, Triangle, LayoutGrid, HardDrive, Terminal, Braces, FileCode } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Home | Full-Stack Software Engineer",
+  description: "Portfolio seorang full-stack software engineer yang berspesialisasi di React ecosystem dan arsitektur cloud-native Node.js.",
+  openGraph: {
+    title: "Full-Stack Software Engineer Portfolio",
+    description: "Membangun pengalaman digital yang scalable dengan teknologi modern.",
+  },
+};
 
 export const revalidate = 0; // Disable static caching so data changes reflect immediately
 
@@ -145,7 +155,7 @@ export default async function Beranda() {
                 <h3 className="font-mono text-xs font-semibold text-muted tracking-widest uppercase mb-3">Tech Stack & Languages</h3>
                 <div className="flex flex-wrap gap-2">
                   {techStackItems.map(tech => (
-                    <span key={tech.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
+                    <span key={tech.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
                       <tech.icon size={14} className={tech.color} />
                       {tech.name}
                     </span>
@@ -158,7 +168,7 @@ export default async function Beranda() {
                 <h3 className="font-mono text-xs font-semibold text-muted tracking-widest uppercase mb-3">Tools & Environment</h3>
                 <div className="flex flex-wrap gap-2">
                   {devToolsItems.map(tool => (
-                    <span key={tool.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
+                    <span key={tool.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/5 bg-white/2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all cursor-default">
                       <tool.icon size={14} className={tool.color} />
                       {tool.name}
                     </span>
@@ -179,7 +189,7 @@ export default async function Beranda() {
               
               {/* Frame Kaca (Glassmorphism) */}
               <div className="relative w-full h-full rounded-full border border-white/10 bg-linear-to-b from-white/5 to-transparent p-3 shadow-2xl backdrop-blur-md">
-                <div className="w-full h-full rounded-full overflow-hidden border border-white/5 bg-[#0B0E14] relative flex items-center justify-center">
+                <div className="w-full h-full rounded-full overflow-hidden border border-white/5 bg-background relative flex items-center justify-center">
                   {/* Foto Profil */}
                   <Image 
                     src="/images/profile.jpg"
@@ -191,7 +201,7 @@ export default async function Beranda() {
                     sizes="(max-width: 1024px) 100vw, 500px"
                   />
                   {/* Overlay gradien tipis agar menyatu dengan background */}
-                  <div className="absolute inset-0 bg-linear-to-tr from-[#0B0E14]/40 via-transparent to-transparent pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-linear-to-tr from-background/40 via-transparent to-transparent pointer-events-none"></div>
                 </div>
               </div>
               

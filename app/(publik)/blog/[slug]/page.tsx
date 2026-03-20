@@ -8,6 +8,7 @@ import { use } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { ArrowLeft, Clock, Calendar, ChevronRight } from "lucide-react";
 import PdfViewer from "@/components/fitur/PdfViewer";
+import MarkdownRenderer from "@/components/fitur/MarkdownRenderer";
 
 // --- Types ---
 type Artikel = {
@@ -52,73 +53,7 @@ function getExcerpt(konten: string | null, maxLength = 200): string {
   return plainText.length > maxLength ? plainText.slice(0, maxLength) + "..." : plainText;
 }
 
-// Simple markdown-lite renderer
-function renderContent(konten: string) {
-  const lines = konten.split("\n");
-  const elements: React.ReactNode[] = [];
-  let codeBuffer: string[] = [];
-  let inCode = false;
-  let codeLang = "";
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (line.startsWith("```")) {
-      if (inCode) {
-        elements.push(
-          <div key={i} className="bg-background border border-white/5 rounded-xl p-6 my-8 font-mono text-sm overflow-x-auto">
-            <div className="flex justify-between mb-4 border-b border-white/5 pb-2">
-              <span className="text-slate-500">snippet</span>
-              <span className="text-primary uppercase">{codeLang || "CODE"}</span>
-            </div>
-            <pre className="text-slate-300 whitespace-pre-wrap"><code>{codeBuffer.join("\n")}</code></pre>
-          </div>
-        );
-        codeBuffer = [];
-        inCode = false;
-        codeLang = "";
-      } else {
-        inCode = true;
-        codeLang = line.replace("```", "").trim();
-      }
-      continue;
-    }
-
-    if (inCode) {
-      codeBuffer.push(line);
-      continue;
-    }
-
-    if (line.startsWith("## ")) {
-      elements.push(<h2 key={i} className="text-2xl font-bold text-white mt-10 mb-4">{line.replace("## ", "")}</h2>);
-    } else if (line.startsWith("### ")) {
-      elements.push(<h3 key={i} className="text-xl font-bold text-white mt-8 mb-3">{line.replace("### ", "")}</h3>);
-    } else if (line.startsWith("> ")) {
-      elements.push(
-        <blockquote key={i} className="border-l-4 border-primary pl-6 py-2 italic text-slate-400 my-8">
-          {line.replace(/^> /, "")}
-        </blockquote>
-      );
-    } else if (line.startsWith("- ") || line.startsWith("* ")) {
-      elements.push(
-        <li key={i} className="text-slate-300 ml-6 mb-1 list-disc">
-          {line.replace(/^[-*] /, "")}
-        </li>
-      );
-    } else if (line.trim() === "") {
-      elements.push(<div key={i} className="mb-4" />);
-    } else {
-      const html = line
-        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
-        .replace(/`(.*?)`/g, '<code class="bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono text-sm">$1</code>');
-      elements.push(
-        <p key={i} className="text-slate-300 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: html }} />
-      );
-    }
-  }
-
-  return elements;
-}
 
 // --- Main Component ---
 export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -257,7 +192,7 @@ export default function ArtikelDetailPage({ params }: { params: Promise<{ slug: 
           {/* Content */}
           <div className="prose-invert max-w-none">
             {artikel.konten ? (
-              renderContent(artikel.konten)
+              <MarkdownRenderer content={artikel.konten} />
             ) : (
               <p className="text-slate-400">No content available for this article yet.</p>
             )}

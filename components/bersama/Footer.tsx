@@ -5,7 +5,7 @@ import { Code2, Zap } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-white/5 bg-[#0B0E14] mt-auto">
+    <footer className="w-full border-t border-white/5 bg-background mt-auto">
       <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20">
           
@@ -42,7 +42,7 @@ export function Footer() {
 
         <div className="border-t border-white/5 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted text-sm text-center md:text-left">
-            &copy; 2024 Developer Portfolio. All rights reserved.
+            &copy; {new Date().getFullYear()} Developer Portfolio. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-sm text-muted">
             <span>Designed with Inter & JetBrains Mono</span>

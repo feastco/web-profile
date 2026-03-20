@@ -42,7 +42,7 @@ export function Navbar() {
                 (pathname.startsWith('/proyek') && link.href === '/proyek') ||
                 (pathname.startsWith('/blog') && link.href === '/blog')
                   ? "text-white border-b-2 border-primary py-1"
-                  : "text-muted"
+                  : "text-gray-300"
               )}
             >
               {link.name}
@@ -50,7 +50,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <a href="mailto:hello@developer.io" className="hidden sm:inline-flex bg-primary hover:bg-primary-hover text-white text-sm font-medium px-6 py-2.5 rounded-md transition-all active:scale-95">
             Hire Me
           </a>
@@ -81,7 +81,7 @@ export function Navbar() {
                 (pathname.startsWith('/proyek') && link.href === '/proyek') ||
                 (pathname.startsWith('/blog') && link.href === '/blog')
                   ? "text-primary font-semibold border-primary/20"
-                  : "text-muted"
+                  : "text-gray-300"
               )}
             >
               {link.name}

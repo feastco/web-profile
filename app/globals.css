@@ -16,10 +16,13 @@
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Dark mode (default) */
 :root {
   --background: #0B0E14;
   --foreground: #E2E8F0;
 }
+
+
 
 body {
   background: var(--background);
@@ -27,6 +30,7 @@ body {
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Base utility overwrites */
@@ -37,8 +41,19 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+
+
 /* Dot pattern background */
 .bg-grid-pattern {
   background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+
+
+/* Markdown / highlight.js dark theme compatibility */
+.hljs {
+  background: var(--color-secondary-bg) !important;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
 }

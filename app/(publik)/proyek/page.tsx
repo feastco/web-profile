@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase/client";
 import { KartuProyek, Proyek } from "@/components/fitur/KartuProyek";
 import { Terminal } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Proyek | Project Archive",
+  description: "Koleksi lengkap proyek pengembangan perangkat lunak, mulai dari aplikasi enterprise hingga kontribusi open-source.",
+  openGraph: {
+    title: "Project Archive",
+    description: "Koleksi lengkap proyek pengembangan perangkat lunak saya.",
+  },
+};
 
 export const revalidate = 0; // Disable static caching so data changes reflect immediately
 
@@ -48,7 +58,7 @@ export default async function HalamanProyek() {
   return (
     <div className="pt-8 pb-20 min-h-screen">
       <div className="max-w-3xl mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/[0.02] text-sm font-medium text-primary mb-6 font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/5 bg-white/2 text-sm font-medium text-primary mb-6 font-mono">
           <Terminal size={16} />
           <span>~/projects/archive</span>
         </div>
@@ -67,7 +77,7 @@ export default async function HalamanProyek() {
       </div>
 
       {proyekList.length === 0 && (
-        <div className="py-24 text-center border overflow-hidden relative border-white/5 rounded-2xl bg-[#151921] flex flex-col items-center justify-center">
+        <div className="py-24 text-center border overflow-hidden relative border-white/5 rounded-2xl bg-secondary-bg flex flex-col items-center justify-center">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-[80px]"></div>
           <Terminal size={48} className="text-white/20 mb-4 relative z-10" strokeWidth={1} />
           <p className="text-muted font-mono relative z-10">No projects found in the database.</p>
